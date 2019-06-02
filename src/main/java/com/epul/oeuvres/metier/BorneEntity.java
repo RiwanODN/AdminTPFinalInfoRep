@@ -8,8 +8,9 @@ import java.util.Objects;
 public class BorneEntity {
     private int idBorne;
     private byte etatBorne;
-    private int station;
-    private int vehicule;
+    private StationEntity station;
+    private VehiculeEntity vehicule;
+
 
     @Id
     @Column(name = "idBorne")
@@ -31,23 +32,23 @@ public class BorneEntity {
         this.etatBorne = etatBorne;
     }
 
-    @Basic
-    @Column(name = "station")
-    public int getStation() {
+    @ManyToOne
+    @JoinColumn(name = "station", referencedColumnName = "id_station", nullable = false)
+    public StationEntity getStation() {
         return station;
     }
 
-    public void setStation(int station) {
+    public void setStation(StationEntity station) {
         this.station = station;
     }
 
-    @Basic
-    @Column(name = "idVehicule")
-    public int getVehicule() {
+    @ManyToOne
+    @JoinColumn(name = "id_Vehicule", referencedColumnName = "id_Vehicule", nullable = false)
+    public VehiculeEntity getVehicule() {
         return vehicule;
     }
 
-    public void setVehicule(int vehicule) {
+    public void setVehicule(VehiculeEntity vehicule) {
         this.vehicule = vehicule;
     }
 

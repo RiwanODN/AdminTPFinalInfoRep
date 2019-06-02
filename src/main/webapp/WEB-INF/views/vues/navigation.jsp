@@ -81,17 +81,19 @@
                     <li><a href="listerClient.htm"><span class="glyphicon glyphicon-th-list"></span> Lister les clients</a></li>
                 </ul>
             </li>
+
+
+
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"  style="fontSize: 15px;">
                     <span class="glyphicon glyphicon-user"></span>
-                    Oeuvres
+                    Bornes
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="ajouterOeuvre.htm"><span class="glyphicon glyphicon-plus"></span> Ajout Oeuvre a vendre</a></li>
-                    <li><a href="listerOeuvre.htm"><span class="glyphicon glyphicon-th-list"></span> Lister les oeuvres a vendre</a></li>
-                    <li><a href="ajouterOeuvrepret.htm"><span class="glyphicon glyphicon-plus"></span> Ajout Oeuvre a preter</a></li>
-                    <li><a href="listerOeuvrepret.htm"><span class="glyphicon glyphicon-th-list"></span> Lister les oeuvres prets</a></li>
+                    <li><a href="ajouterBorne.htm"><span class="glyphicon glyphicon-plus"></span> Ajout d'une borne</a></li>
+                    <li><a href="listerBorne.htm"><span class="glyphicon glyphicon-th-list"></span> Lister les bornes</a></li>
+
                 </ul>
             </li>
             <li><a href="javascript:fermer()" style="fontSize: 15px;"><span class="glyphicon glyphicon-log-out"></span> Quitter</a></li>
