@@ -49,4 +49,59 @@ public class ClientService extends EntityService {
         }
         return client;
     }
+
+    public void insertClient(ClientEntity unClient) throws MonException {
+        try
+        {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+            entitymanager.persist(unClient);
+            transac.commit();
+            entitymanager.close();
+        }
+        catch (RuntimeException e)
+        {
+            new MonException("Erreur de lecture", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /*modifier adhérent*/
+    public void majClient(ClientEntity unClient) throws MonException {
+        try
+        {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+            entitymanager.merge(unClient);
+            transac.commit();
+            entitymanager.close();
+        }
+        catch (RuntimeException e)
+        {
+            new MonException("Erreur de lecture", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*modifier adhérent*/
+    public void supprimerClient(int idClient) throws MonException {
+        try
+        {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+            entitymanager.remove(entitymanager.find(ClientEntity.class, idClient));
+            transac.commit();
+            entitymanager.close();
+        }
+        catch (RuntimeException e)
+        {
+            new MonException("Erreur de lecture", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

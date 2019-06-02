@@ -73,12 +73,12 @@
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <span class="glyphicon glyphicon-user"></span>
-                    Adhérents
+                    Clients
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="ajouterAdherent.htm"><span class="glyphicon glyphicon-plus"></span> Ajout Adhérent</a></li>
-                    <li><a href="listerAdherent.htm"><span class="glyphicon glyphicon-th-list"></span> Lister les adhérents</a></li>
+                    <li><a href="ajouterClient.htm"><span class="glyphicon glyphicon-plus"></span> Ajout client</a></li>
+                    <li><a href="listerClient.htm"><span class="glyphicon glyphicon-th-list"></span> Lister les clients</a></li>
                 </ul>
             </li>
             <li class="dropdown">
