@@ -44,6 +44,7 @@ public class Authentification {
 
                 Service unService = new Service();
                 UtilisateurEntity unUtilisateur = unService.getUtilisateur(login);
+
                 if (unUtilisateur != null) {
                     try {
                         String pwdmd5 = FonctionsUtiles.md5(pwd);
