@@ -59,3 +59,4 @@ public class UtilisateurEntity {
         return Objects.hash(numUtil, nomUtil, motPasse, role);
     }
 }
+

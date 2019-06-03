@@ -11,13 +11,11 @@ public class BorneEntity {
     private StationEntity station;
     private VehiculeEntity vehicule;
 
-
     @Id
     @Column(name = "idBorne")
     public int getIdBorne() {
         return idBorne;
     }
-
     public void setIdBorne(int idBorne) {
         this.idBorne = idBorne;
     }
@@ -27,31 +25,40 @@ public class BorneEntity {
     public byte getEtatBorne() {
         return etatBorne;
     }
-
     public void setEtatBorne(byte etatBorne) {
         this.etatBorne = etatBorne;
     }
 
     @ManyToOne
-    @JoinColumn(name = "station", referencedColumnName = "id_station", nullable = false)
+    @JoinColumn(name = "station", referencedColumnName = "idStation")
     public StationEntity getStation() {
         return station;
     }
-
     public void setStation(StationEntity station) {
         this.station = station;
     }
 
     @ManyToOne
-    @JoinColumn(name = "id_Vehicule", referencedColumnName = "id_Vehicule", nullable = false)
+    @JoinColumn(name = "idVehicule", referencedColumnName = "idVehicule")
     public VehiculeEntity getVehicule() {
         return vehicule;
     }
-
     public void setVehicule(VehiculeEntity vehicule) {
         this.vehicule = vehicule;
     }
-
+    /*
+        @Basic
+        @Column(name = "idVehicule")
+        public Integer getVehicule() {
+            if(vehicule != null) {
+                return vehicule;
+            }
+            return 0;
+        }
+        public void setVehicule(Integer vehicule) {
+            this.vehicule = vehicule;
+        }
+    */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -8,7 +8,7 @@ import com.epul.oeuvres.metier.*;
 
 import javax.persistence.EntityTransaction;
 
-public class Service extends EntityService{
+public class Service extends EntityService {
 
 	public UtilisateurEntity getUtilisateur( String login) throws MonException
 	{
@@ -37,4 +37,3 @@ public class Service extends EntityService{
 
 
 }
-
