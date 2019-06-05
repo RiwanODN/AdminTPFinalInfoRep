@@ -1,6 +1,7 @@
 package com.epul.oeuvres.dao;
 
 import com.epul.oeuvres.meserreurs.MonException;
+import com.epul.oeuvres.metier.TypeVehiculeEntity;
 import com.epul.oeuvres.metier.VehiculeEntity;
 
 import javax.persistence.EntityTransaction;
@@ -47,4 +48,39 @@ public class VehiculeService extends EntityService {
 		}
 		return vehicule;
 	}
+
+	/*public List getNbVehiculesByType(int typeId) throws MonException {
+		List typesVehicule = null;
+		try
+		{
+			EntityTransaction transac = startTransaction();
+			transac.begin();
+			typesVehicule =
+					entitymanager.createQuery("SELECT COUNT(v) FROM VehiculeEntity v WHERE v.typeVehicule="+ typeId).getResultList();
+			entitymanager.close();
+		}catch (RuntimeException e) {
+			new MonException("Erreur de lecture", e.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return typesVehicule;
+	}*/
+
+    public List<TypeVehiculeEntity> getVehiculeType(int vehiculeId) throws MonException {
+        List<TypeVehiculeEntity> typesVehicule = null;
+        try
+        {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+            typesVehicule = (List<TypeVehiculeEntity>)
+                    entitymanager.createQuery("SELECT t FROM TypeVehiculeEntity t JOIN VehiculeEntity v ON t.idTypeVehicule = v.typeVehicule " +
+                            "WHERE v.idVehicule="+ vehiculeId).getResultList();
+            entitymanager.close();
+        }catch (RuntimeException e) {
+            new MonException("Erreur de lecture", e.getMessage());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return typesVehicule;
+    }
 }
