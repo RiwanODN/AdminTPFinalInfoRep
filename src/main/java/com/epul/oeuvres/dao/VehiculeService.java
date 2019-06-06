@@ -83,4 +83,19 @@ public class VehiculeService extends EntityService {
         }
         return typesVehicule;
     }
+
+    public void supprimerVehicule(VehiculeEntity vehiculeEntity) throws MonException {
+        try {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+            entitymanager.remove(entitymanager.find(VehiculeEntity.class, vehiculeEntity.getIdVehicule()));
+            transac.commit();
+            entitymanager.close();
+        } catch (MonException e) {
+            throw e;
+        }
+        catch (Exception exc) {
+            throw new MonException(exc.getMessage(), "systeme");
+        }
+    }
 }

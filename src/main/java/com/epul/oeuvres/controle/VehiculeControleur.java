@@ -23,18 +23,23 @@ import java.util.List;
 @Controller
 public class VehiculeControleur {
 
+    private HashMap<VehiculeEntity, TypeVehiculeEntity> map;
+
     @RequestMapping(value = "listerVehicule.htm")
     public ModelAndView listerVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String destinationPage;
         try {
-            HashMap<VehiculeEntity, TypeVehiculeEntity> map = new HashMap<>();
-            VehiculeService vehiculeService = new VehiculeService();
-            List<VehiculeEntity> vehicules = vehiculeService.consulterListeVehicules();
-            for(VehiculeEntity vehiculeEntity : vehicules) {
-                List<TypeVehiculeEntity> typeVehiculeEntities =
-                        vehiculeService.getVehiculeType(vehiculeEntity.getIdVehicule());
-                map.put(vehiculeEntity, typeVehiculeEntities.get(0));
+            if(map == null) {
+                map = new HashMap<>();
+                VehiculeService vehiculeService = new VehiculeService();
+                List<VehiculeEntity> vehicules = vehiculeService.consulterListeVehicules();
+                for(VehiculeEntity vehiculeEntity : vehicules) {
+                    List<TypeVehiculeEntity> typeVehiculeEntities =
+                            vehiculeService.getVehiculeType(vehiculeEntity.getIdVehicule());
+                    map.put(vehiculeEntity, typeVehiculeEntities.get(0));
+                }
             }
+
 
             /*HashMap<TypeVehiculeEntity, Object> map = new HashMap<>();
             VehiculeService vehiculeService = new VehiculeService();
@@ -52,5 +57,24 @@ public class VehiculeControleur {
         return new ModelAndView(destinationPage);
     }
 
+    @RequestMapping(value = "supprimerVehicule.htm")
+    public ModelAndView supprimerVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String destinationPage;
+        try {
+            VehiculeService vehiculeService = new VehiculeService();
+            String[] ids = request.getParameter("id").split(",");
+            for(int i=0; i<ids.length; i++) {
+                VehiculeEntity vehiculeEntity = vehiculeService.consulterVehiculeById(Integer.parseInt(ids[i]));
+                vehiculeService.supprimerVehicule(vehiculeEntity);
+                map.remove(vehiculeEntity);
+            }
 
+            request.setAttribute("map", map);
+            destinationPage = "vues/listerVehicule";
+        } catch (MonException e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "/vues/Erreur";
+        }
+        return new ModelAndView(destinationPage);
+    }
 }
