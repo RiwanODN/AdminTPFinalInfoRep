@@ -33,6 +33,10 @@
 					<td>${item.station.getAdresse()} €</td>
 					<td>${item.station.getVille()}</td>
 					<td>${item.vehicule.getIdVehicule()}</td>
+					<td><a class="btn btn-info" href="modifierBorne.htm?id=${item.idBorne}" role="button"><span
+							class="glyphicon glyphicon-pencil"></span> Modifier</a>
+						<a class="btn btn-danger" href="supprimerBorne.htm?id=${item.idBorne}" role="button"><span
+								class="glyphicon glyphicon-remove-circle"></span> Supprimer</a></td>
 
 				</tr>
 			</c:forEach>

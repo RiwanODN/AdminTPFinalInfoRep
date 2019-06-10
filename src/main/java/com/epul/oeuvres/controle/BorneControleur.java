@@ -59,8 +59,9 @@ public class BorneControleur {
             
             Borne.setEtatBorne(Byte.valueOf("0"));
 
-            StationEntity stat = stationServ.consulterStationById(Integer.parseInt(request.getParameter("Station")));
+            StationEntity stat = stationServ.consulterStationById(Integer.parseInt(request.getParameter("station")));
             Borne.setStation(stat);
+            Borne.setVehicule(null);
 
            /* VehiculeEntity vehiculeEn =vehiculeServ.consulterVehiculeById(Integer.parseInt(request.getParameter("Vehicule")));
             Borne.setVehicule(vehiculeEn);*/
@@ -69,7 +70,6 @@ public class BorneControleur {
 
             request.setAttribute("mesBornes", service.consulterListeBornes());
 
-            request.setAttribute("mesBornes", service.consulterListeBornes());
             destinationPage = "/vues/listerBorne";
         } catch (Exception e) {
             request.setAttribute("MesErreurs", e.getMessage());
@@ -97,17 +97,21 @@ public class BorneControleur {
         return new ModelAndView(destinationPage);
     }
 
-/*
+
     @RequestMapping(value = "modifierBorne.htm")
     public ModelAndView modifierBorne(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String destinationPage = "";
         try {
             BorneService unService = new BorneService();
             StationService stationService = new StationService();
+            VehiculeService vehiculeService = new VehiculeService();
+
             int numero = Integer.parseInt(request.getParameter("id"));
 
-            request.setAttribute("Borne", unService.BorneById(numero));
-            request.setAttribute("props", stationService.consulterListeProps());
+            request.setAttribute("Borne", unService.consulterBorneById(numero));
+            request.setAttribute("vehicules", vehiculeService.consulterListeVehicules());
+            request.setAttribute("stations", stationService.consulterListeStations());
+
 
             destinationPage = "vues/modifierBorne";
         } catch (Exception e) {
@@ -125,22 +129,40 @@ public class BorneControleur {
 
         BorneService service = new BorneService();
         StationService stationServ = new StationService();
+        VehiculeService vehiculeService= new VehiculeService();
 
         String destinationPage = "/vues/listerBorne";
 
         try {
 
+            int numero= Integer.parseInt(request.getParameter("borne"));
 
-            BorneEntity Borne = service.consulterBorneById(Integer.parseInt(request.getParameter("id")));
-            Borne.setTitreBorne(request.getParameter("txtnom"));
-            Borne.setPrixBorne(Float.parseFloat(request.getParameter("txtprix")));
-            StationEntityprop = stationServ.propById(Integer.parseInt(request.getParameter("Station")));
+            BorneEntity BorneEnt = service.consulterBorneById(numero);
 
-            Borne.setStation(prop);
-            service.modifBorne(Borne);
+
+            StationEntity stat = stationServ.consulterStationById(Integer.parseInt(request.getParameter("station")));
+            BorneEnt.setStation(stat);
+
+
+            if(request.getParameter("vehicule").equals("")){
+
+                BorneEnt.setVehicule(null);
+                BorneEnt.setEtatBorne(Byte.valueOf("0"));
+            }
+            else {
+
+                VehiculeEntity vehiculeEn =vehiculeService.consulterVehiculeById(Integer.parseInt(request.getParameter("vehicule")));
+                BorneEnt.setVehicule(vehiculeEn);
+                BorneEnt.setEtatBorne(Byte.valueOf("1"));
+            }
+
+
+            service.modifBorne(BorneEnt);
+
             request.setAttribute("mesBornes", service.consulterListeBornes());
             destinationPage = "/vues/listerBorne";
         } catch (Exception e) {
+            System.out.println("erreur ma gueule");
             request.setAttribute("MesErreurs", e.getMessage());
             destinationPage = "vues/Erreur";
         }
@@ -148,7 +170,7 @@ public class BorneControleur {
         return new ModelAndView(destinationPage);
     }
 
-    */
+
     @RequestMapping(value = "supprimerBorne.htm")
     public ModelAndView supprimerBorne(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String destinationPage = "";
