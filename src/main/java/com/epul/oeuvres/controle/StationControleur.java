@@ -18,6 +18,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -75,5 +76,46 @@ public class StationControleur {
 		}
 	}
 
+    @RequestMapping(value = "ajouterStation.htm")
+    public ModelAndView ajouterOeuvrepret(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String destinationPage = "";
+        try {
+
+            StationEntity stationEntity = new StationEntity();
+            stationEntity.setNumero(Integer.parseInt(request.getParameter("num")));
+            stationEntity.setAdresse(request.getParameter("adr"));
+            stationEntity.setVille(request.getParameter("ville"));
+            stationEntity.setCodePostal(Integer.parseInt(request.getParameter("cp")));
+            stationEntity.setLongitude(BigDecimal.valueOf(Double.parseDouble(request.getParameter("lon"))));
+            stationEntity.setLatitude(BigDecimal.valueOf(Double.parseDouble(request.getParameter("lat"))));
+
+            StationService stationService = new StationService();
+            stationService.insertStation(stationEntity);
+
+            destinationPage = "/vues/map";
+        } catch (Exception e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "Erreur";
+        }
+        return new ModelAndView(destinationPage);
+    }
+
+    @RequestMapping(value = "supprimerStation.htm")
+    public ModelAndView supprimerStation(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String destinationPage;
+        try {
+            StationService stationService = new StationService();
+            int id = Integer.parseInt(request.getParameter("id"));
+            StationEntity stationEntity = stationService.consulterStationById(id);
+            stationService.supprimerStation(stationEntity);
+
+            destinationPage = "/vues/map";
+        } catch (MonException e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "/vues/Erreur";
+        }
+        return new ModelAndView(destinationPage);
+    }
 
 }
