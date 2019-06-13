@@ -32,9 +32,11 @@
 </html>
 <body onload="test();">
 <%@include file="navigation.jsp"%>
+<h1>Carte des Stations</h1>
 	<div class="container">
 		<div class="container">
 			<div class="row">
+
 				<div id="map" style="width:80%; height:80%"></div>
 				<div class="btn-group" role="group">
 					<button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#ajouterModal">Ajouter</button>
@@ -103,47 +105,6 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="modifierModal" role="dialog">
-                    <div class="modal-dialog">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Modifier Station</h4>
-                            </div>
-                            <div class="modal-body">
-                                <!--<form>
-
-                                    <div class="form-group">
-                                        <label class="control-label " for="adresse">Adresse</label>
-                                        <input class="form-control" id="adresse" name="adresse" type="text"/>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label" for="numero">Numero</label>
-                                        <input class="form-control" id="numero" name="numero" type="text"/>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label " for="ville">Ville</label>
-                                        <input class="form-control" id="ville" name="ville" type="text"/>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label " for="codePostal">Code Postal</label>
-                                        <input class="form-control" id="codePostal" name="codePostal" type="text"/>
-                                    </div>
-
-                                </form>-->
-
-                            </div>
-                            <div class="modal-footer">
-                                <button id="btnValiderModifier" type="submit" class="btn btn-success btn-default pull-right">Modifier</button>
-                                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">Annuler</button>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
 
 			</div>
@@ -194,8 +155,6 @@
                                     '<p>'+value.codePostal+', '+value.ville+'</p>' +
                                     '<button id="btnSupprimer" type="button" class="btn btn-default btn-sm" data-toggle="modal" ' +
                                 'data-target="#supprimerModal" onclick="setId('+value.idStation+')">Supprimer</button>'+
-                                '<button id="btnModifier" type="button" class="btn btn-default btn-sm" data-toggle="modal" ' +
-                                'data-target="#modifierModal">Modifier</button>'+
                                 '</div>');
 				});
 			}
@@ -217,7 +176,6 @@
 					userlat = response[0]['lat'];
 					userlon = response[0]['lon'];
 					console.log("lon"+userlon+"lat"+userlat+"ville"+ville);
-					<%--<c:set var="str" value="${str}" scope="request" />--%>
 					window.location = 'ajouterStation.htm?lon='+userlon+'&lat='+userlat+'&num='+num+'&adr='+adr+'&ville='+ville+'&cp='+cp;
 				}
 				else {
@@ -231,11 +189,9 @@
 
 	function setId(elmtid) {
         globalId = elmtid;
-        //console.log("elemtID "+elmtid +" globalID " + globalId);
     }
 
     function supprimer() {
-        //console.log("after supprimer pressed "+globalId);
         window.location = 'supprimerStation.htm?id='+globalId;
     }
 	

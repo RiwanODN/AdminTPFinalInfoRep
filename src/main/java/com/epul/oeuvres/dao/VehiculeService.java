@@ -98,4 +98,18 @@ public class VehiculeService extends EntityService {
             throw new MonException(exc.getMessage(), "systeme");
         }
     }
+
+	public void insertVehicule(VehiculeEntity vehiculeEntity) throws MonException {
+		try {
+			EntityTransaction transac = startTransaction();
+			transac.begin();
+			entitymanager.persist(vehiculeEntity);
+			transac.commit();
+			entitymanager.close();
+		} catch (RuntimeException e) {
+			new MonException("Erreur de lecture", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

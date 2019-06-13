@@ -32,7 +32,7 @@
             $(this).toggleClass('selected');
             if(table.rows('.selected').data().length == 0) {
                 //console.log("is hidden")
-                $('#btnSupprimer').prop("disabled", true);
+				$('#btnSupprimer').prop("disabled", true);
             }
             else {
                 $('#btnSupprimer').prop("disabled", false);
@@ -47,6 +47,7 @@
             //console.log(ids)
             //alert(table.rows('.selected').data().length + ' row(s) selected');
         });
+		
     });
 </script>
 
@@ -61,8 +62,7 @@
     <h2>Tableau des Vehicules</h2>
     <div class="container">
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default btn-lg">Ajouter</button>
-            <button type="button" class="btn btn-default btn-lg">Modifier</button>
+            <button id="btnAjouter"type="button" class="btn btn-default btn-lg" onclick="{window.location = 'ajouterVehicule.htm';}">Ajouter</button>
             <button disabled id="btnSupprimer" type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#supprimerModal">Supprimer</button>
         </div>
 

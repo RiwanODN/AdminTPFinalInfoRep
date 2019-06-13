@@ -1,7 +1,9 @@
 package com.epul.oeuvres.controle;
 
+import com.epul.oeuvres.dao.StationService;
 import com.epul.oeuvres.dao.TypeVehiculeService;
 import com.epul.oeuvres.meserreurs.MonException;
+import com.epul.oeuvres.metier.StationEntity;
 import com.epul.oeuvres.metier.TypeVehiculeEntity;
 import com.epul.oeuvres.metier.VehiculeEntity;
 import com.epul.oeuvres.dao.VehiculeService;
@@ -74,6 +76,61 @@ public class VehiculeControleur {
         } catch (MonException e) {
             request.setAttribute("MesErreurs", e.getMessage());
             destinationPage = "/vues/Erreur";
+        }
+        return new ModelAndView(destinationPage);
+    }
+	
+	@RequestMapping(value = "insererVehicule.htm")
+    public ModelAndView insererVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String destinationPage = "";
+        try {
+			
+			VehiculeEntity vehiculeEntity = new VehiculeEntity();
+			vehiculeEntity.setRfid(Integer.parseInt(request.getParameter("rfid")));
+			vehiculeEntity.setEtatBatterie(Integer.parseInt(request.getParameter("etat")));
+			vehiculeEntity.setDisponibilite("LIBRE");
+			vehiculeEntity.setTypeVehicule(Integer.parseInt(request.getParameter("typeId")));
+			
+			StationService stationService = new StationService();
+			StationEntity stationEntity = stationService.consulterStationById(
+			        Integer.parseInt(request.getParameter("stationId")));
+			vehiculeEntity.setLatitude(stationEntity.getLatitude());
+			vehiculeEntity.setLongitude(stationEntity.getLongitude());
+			
+			VehiculeService vehiculeService = new VehiculeService();
+			vehiculeService.insertVehicule(vehiculeEntity);
+			
+			TypeVehiculeService typeVehiculeService = new TypeVehiculeService();
+			TypeVehiculeEntity typeVehiculeEntity = typeVehiculeService.consulterTypeVehiculeById(
+			        vehiculeEntity.getTypeVehicule());
+			map.put(vehiculeEntity, typeVehiculeEntity);
+			
+            request.setAttribute("map", map);
+
+        } catch (Exception e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "vues/Erreur";
+        }
+        destinationPage = "/vues/listerVehicule";
+        return new ModelAndView(destinationPage);
+    }
+
+    @RequestMapping(value = "ajouterVehicule.htm")
+    public ModelAndView ajouterVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String destinationPage = "";
+        try {
+			TypeVehiculeService typeVehiculeService = new TypeVehiculeService();
+			request.setAttribute("mesTypes", typeVehiculeService.consulterListeTypeVehicules());
+			
+			StationService stationService = new StationService();
+			request.setAttribute("mesStations", stationService.consulterListeStations());
+
+            destinationPage = "vues/ajouterVehicule";
+        } catch (Exception e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "Erreur";
         }
         return new ModelAndView(destinationPage);
     }
