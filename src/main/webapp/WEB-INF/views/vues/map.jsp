@@ -105,6 +105,53 @@
                     </div>
                 </div>
 
+                <div class="modal fade" id="modifierModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Modifier Station</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div hidden class="form-group"> <!-- ID field -->
+                                        <label class="control-label " for="modifid">ID</label>
+                                        <input class="form-control" id="modifid" name="modifid" type="text"/>
+                                    </div>
+
+                                    <div class="form-group"> <!-- Adresse field -->
+                                        <label class="control-label " for="modifadr">Adresse</label>
+                                        <input class="form-control" id="modifadr" name="modifadr" type="text"/>
+                                    </div>
+
+                                    <div class="form-group"> <!-- Rue field -->
+                                        <label class="control-label" for="modifnum">Numero</label>
+                                        <input class="form-control" id="modifnum" name="modifnum" type="text"/>
+                                    </div>
+
+                                    <div class="form-group"> <!-- Ville field -->
+                                        <label class="control-label " for="modifville">Ville</label>
+                                        <input class="form-control" id="modifville" name="modifville" type="text"/>
+                                    </div>
+
+                                    <div class="form-group"> <!-- Code Postal field -->
+                                        <label class="control-label " for="modifcp">Code Postal</label>
+                                        <input class="form-control" id="modifcp" name="modifcp" type="text"/>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button id="btnModifier" type="submit" class="btn btn-success btn-default pull-right" onclick="modifier()">Modifier</button>
+                                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">Annuler</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
                 </div>
 
 			</div>
@@ -146,6 +193,7 @@
 			url: 'afficherStation.htm',
 			success: function (result) {
 				result.forEach(function (value) {
+                    var info = value.idStation+";"+value.adresse+";"+value.numero+";"+value.ville+";"+value.codePostal;
 					var marker = L.marker([value.latitude, value.longitude]
                         //, {icon: testIcon}
                         ).addTo(map)
@@ -155,6 +203,8 @@
                                     '<p>'+value.codePostal+', '+value.ville+'</p>' +
                                     '<button id="btnSupprimer" type="button" class="btn btn-default btn-sm" data-toggle="modal" ' +
                                 'data-target="#supprimerModal" onclick="setId('+value.idStation+')">Supprimer</button>'+
+                                '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" ' +
+                                'data-target="#modifierModal" onclick="setInfo('+'\''+info+'\')">Modifier</button>'+
                                 '</div>');
 				});
 			}
@@ -166,29 +216,74 @@
 		var adr=$("#adresse").val();
 		var ville=$("#ville").val();
 		var cp=$("#codePostal").val();
-		var str = num + "+" + adr + "+" + ville+ "+" + cp;
-			$.ajax({
-				url: "https://nominatim.openstreetmap.org/search", // URL de Nominatim
-				type: 'get', // Requête de type GET
-				data: "q="+str+"&format=json&addressdetails=1&limit=1&polygon_svg=1" // Données envoyées (q -> adresse complète, format -> format attendu pour la réponse, limit -> nombre de réponses attendu, polygon_svg -> fournit les données de polygone de la réponse en svg)
-			}).done(function (response) {
-				if(response != ""){
-					userlat = response[0]['lat'];
-					userlon = response[0]['lon'];
-					console.log("lon"+userlon+"lat"+userlat+"ville"+ville);
-					window.location = 'ajouterStation.htm?lon='+userlon+'&lat='+userlat+'&num='+num+'&adr='+adr+'&ville='+ville+'&cp='+cp;
-				}
-				else {
-					alert("Adresse Introuvable!");
-				}
-			}).fail(function (error) {
-				alert(error);
-				console.log(error);
-			});
+
+		if(num && adr && ville && cp) {
+            var str = num + "+" + adr + "+" + ville+ "+" + cp;
+            $.ajax({
+                url: "https://nominatim.openstreetmap.org/search", // URL de Nominatim
+                type: 'get', // Requête de type GET
+                data: "q="+str+"&format=json&addressdetails=1&limit=1&polygon_svg=1" // Données envoyées (q -> adresse complète, format -> format attendu pour la réponse, limit -> nombre de réponses attendu, polygon_svg -> fournit les données de polygone de la réponse en svg)
+            }).done(function (response) {
+                if(response != ""){
+                    userlat = response[0]['lat'];
+                    userlon = response[0]['lon'];
+                    window.location = 'ajouterStation.htm?lon='+userlon+'&lat='+userlat+'&num='+num+'&adr='+adr+'&ville='+ville+'&cp='+cp;
+                }
+                else {
+                    alert("Adresse Introuvable!");
+                }
+            }).fail(function (error) {
+                alert(error);
+                console.log(error);
+            });
+        }
+        else {
+            alert("Veuillez remplir tous les champs!");
+        }
+
 	}
+
+    function modifier() {
+	    var id=$("#modifid").val();
+        var num=$("#modifnum").val();
+        var adr=$("#modifadr").val();
+        var ville=$("#modifville").val();
+        var cp=$("#modifcp").val();
+
+        if(num && adr && ville && cp) {
+            var str = num + "+" + adr + "+" + ville + "+" + cp;
+            $.ajax({
+                url: "https://nominatim.openstreetmap.org/search", // URL de Nominatim
+                type: 'get', // Requête de type GET
+                data: "q=" + str + "&format=json&addressdetails=1&limit=1&polygon_svg=1" // Données envoyées (q -> adresse complète, format -> format attendu pour la réponse, limit -> nombre de réponses attendu, polygon_svg -> fournit les données de polygone de la réponse en svg)
+            }).done(function (response) {
+                if (response != "") {
+                    lat = response[0]['lat'];
+                    lon = response[0]['lon'];
+                    window.location = 'modifierStation.htm?id=' + id + '&lon=' + lon + '&lat=' + lat + '&num=' + num + '&adr=' + adr + '&ville=' + ville + '&cp=' + cp;
+                } else {
+                    alert("Adresse Introuvable!");
+                }
+            }).fail(function (error) {
+                alert(error);
+            });
+        }
+        else {
+            alert("Veuillez remplir tous les champs!");
+        }
+    }
 
 	function setId(elmtid) {
         globalId = elmtid;
+    }
+
+    function setInfo(info) {
+        var infos = info.split(';');
+        $("#modifid").val(infos[0]);
+        $("#modifadr").val(infos[1]);
+        $("#modifnum").val(infos[2]);
+        $("#modifville").val(infos[3]);
+        $("#modifcp").val(infos[4]);
     }
 
     function supprimer() {

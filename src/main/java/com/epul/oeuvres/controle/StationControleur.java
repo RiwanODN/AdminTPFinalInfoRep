@@ -77,7 +77,7 @@ public class StationControleur {
 	}
 
     @RequestMapping(value = "ajouterStation.htm")
-    public ModelAndView ajouterOeuvrepret(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView ajouterStation(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String destinationPage = "";
         try {
@@ -114,6 +114,32 @@ public class StationControleur {
         } catch (MonException e) {
             request.setAttribute("MesErreurs", e.getMessage());
             destinationPage = "/vues/Erreur";
+        }
+        return new ModelAndView(destinationPage);
+    }
+
+    @RequestMapping(value = "modifierStation.htm")
+    public ModelAndView modifierStation(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String destinationPage = "";
+        try {
+            StationService stationService = new StationService();
+            StationEntity stationEntity = stationService.consulterStationById(
+                    Integer.parseInt(request.getParameter("id")));
+
+            stationEntity.setNumero(Integer.parseInt(request.getParameter("num")));
+            stationEntity.setAdresse(request.getParameter("adr"));
+            stationEntity.setVille(request.getParameter("ville"));
+            stationEntity.setCodePostal(Integer.parseInt(request.getParameter("cp")));
+            stationEntity.setLongitude(BigDecimal.valueOf(Double.parseDouble(request.getParameter("lon"))));
+            stationEntity.setLatitude(BigDecimal.valueOf(Double.parseDouble(request.getParameter("lat"))));
+
+            stationService.modifierStation(stationEntity);
+
+            destinationPage = "/vues/map";
+        } catch (Exception e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "Erreur";
         }
         return new ModelAndView(destinationPage);
     }
