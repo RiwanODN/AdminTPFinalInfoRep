@@ -82,6 +82,18 @@
                 </ul>
             </li>
 
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <span class="glyphicon glyphicon-user"></span>
+                    Utilisations
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="ajouterUtilise.htm"><span class="glyphicon glyphicon-plus"></span> Ajout utilise</a></li>
+                    <li><a href="listerUtilise.htm"><span class="glyphicon glyphicon-th-list"></span> Lister les utilisations</a></li>
+                </ul>
+            </li>
+
 
 
             <li class="dropdown">

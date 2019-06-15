@@ -1,34 +1,35 @@
 package com.epul.oeuvres.metier;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "utilise", schema = "autolib", catalog = "")
-@IdClass(UtiliseEntityPK.class)
-public class UtiliseEntity {
-    private int vehicule;
-    private int client;
+//@IdClass(UtiliseEntityPK.class)
+public class UtiliseEntity implements Serializable {
+    private VehiculeEntity vehicule;
+    private ClientEntity client;
     private Timestamp date;
+    private BorneEntity borneDepart;
+    private BorneEntity borneArrivee;
 
-    @Id
-    @Column(name = "Vehicule")
-    public int getVehicule() {
+    @ManyToOne
+    @JoinColumn(name = "vehicule", referencedColumnName = "idVehicule", nullable = false)
+    public VehiculeEntity getVehicule() {
         return vehicule;
     }
-
-    public void setVehicule(int vehicule) {
+    public void setVehicule(VehiculeEntity vehicule) {
         this.vehicule = vehicule;
     }
 
-    @Id
-    @Column(name = "Client")
-    public int getClient() {
+    @ManyToOne
+    @JoinColumn(name = "client", referencedColumnName="idClient", nullable = false)
+    public ClientEntity getClient() {
         return client;
     }
-
-    public void setClient(int client) {
+    public void setClient(ClientEntity client) {
         this.client = client;
     }
 
@@ -37,9 +38,26 @@ public class UtiliseEntity {
     public Timestamp getDate() {
         return date;
     }
-
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "borne_depart", referencedColumnName = "idBorne")
+    public BorneEntity getBorneDepart() {
+        return borneDepart;
+    }
+    public void setBorneDepart(BorneEntity borneDepart) {
+        this.borneDepart = borneDepart;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "borne_arrivee", referencedColumnName = "idBorne")
+    public BorneEntity getBorneArrivee() {
+        return borneArrivee;
+    }
+    public void setBorneArrivee(BorneEntity borneArrivee) {
+        this.borneArrivee = borneArrivee;
     }
 
     @Override
