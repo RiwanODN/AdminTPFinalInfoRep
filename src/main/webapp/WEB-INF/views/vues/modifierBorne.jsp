@@ -4,10 +4,10 @@
 <%@include file="header.jsp" %>
 <body>
 <%@include file="navigation.jsp"%>
-<H1> Ajout d'une Borne </H1>
+<H1> Modification d'une borne </H1>
 <form method="post" action="ajoutModificationBorne.htm" onsubmit="return teste()">
     <div class="col-md-12 well well-md">
-        <h1>Ajouter Borne</h1>
+        <h1>Modifier une borne</h1>
         <div class="row" >
             <div class="col-md-12" style ="border:none; background-color:transparent; height :20px;">
             </div>
