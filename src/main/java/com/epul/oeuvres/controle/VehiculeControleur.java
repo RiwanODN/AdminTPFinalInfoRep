@@ -6,18 +6,11 @@ import com.epul.oeuvres.metier.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,14 +39,6 @@ public class VehiculeControleur {
                 }
             }
 
-
-            /*HashMap<TypeVehiculeEntity, Object> map = new HashMap<>();
-            VehiculeService vehiculeService = new VehiculeService();
-            TypeVehiculeService typeVehiculeService = new TypeVehiculeService();
-            for(TypeVehiculeEntity type: typeVehiculeService.consulterListeTypeVehicules()) {
-                map.put(type, vehiculeService.getNbVehiculesByType(type.getIdTypeVehicule()).get(0));
-            }*/
-
             request.setAttribute("map", map);
             destinationPage = "/vues/listerVehicule";
         } catch (MonException e) {
@@ -68,9 +53,18 @@ public class VehiculeControleur {
         String destinationPage;
         try {
             VehiculeService vehiculeService = new VehiculeService();
+            ReservationService reservationService = new ReservationService();
             String[] ids = request.getParameter("id").split(",");
             for(int i=0; i<ids.length; i++) {
                 VehiculeEntity vehiculeEntity = vehiculeService.consulterVehiculeById(Integer.parseInt(ids[i]));
+
+                List<ReservationEntity> reservations = reservationService.consulterListeReservation();
+                for(ReservationEntity reservationEntity : reservations) {
+                    if(reservationEntity.getVehicule() == vehiculeEntity.getIdVehicule()) {
+                        return new ModelAndView("vues/alertReserver");
+                    }
+                }
+
                 vehiculeService.supprimerVehicule(vehiculeEntity);
                 map.remove(vehiculeEntity);
             }
@@ -216,7 +210,7 @@ public class VehiculeControleur {
                     if(currentDate.after(reservationEntity.getDateReservation()) &&
                         currentDate.before(reservationEntity.getDateEcheance())) {
 
-                        return new ModelAndView("vues/alertDejaReserver");
+                        return new ModelAndView("vues/alertReserver");
                     }
                 }
             }

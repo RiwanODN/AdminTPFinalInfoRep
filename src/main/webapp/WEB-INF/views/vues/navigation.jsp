@@ -69,7 +69,7 @@
             </a>
         </c:if>
         <c:if test="${sessionScope.id > 0  }">
-            <li><a href="map.htm">MAP</a></li>
+            <li><a href="map.htm">Carte des Stations</a></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <span class="glyphicon glyphicon-user"></span>

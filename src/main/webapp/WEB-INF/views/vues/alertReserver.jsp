@@ -9,7 +9,7 @@
 </div>
     <div class="alert-danger" role="alert">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        Impossible! Cette vehicule est deja reservee.
+        Impossible d'appliquer cette action sur des vehicule(s) reservee(s)!.
     </div>
 
 <div class="form-group">
