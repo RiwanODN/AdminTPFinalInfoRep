@@ -112,4 +112,18 @@ public class VehiculeService extends EntityService {
 			e.printStackTrace();
 		}
 	}
+
+    public void modifierVehicule(VehiculeEntity vehiculeEntity) throws MonException {
+        try {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+            entitymanager.merge(vehiculeEntity);
+            transac.commit();
+            entitymanager.close();
+        } catch (MonException e) {
+            throw e;
+        } catch (Exception exc) {
+            throw new MonException(exc.getMessage(), "systeme");
+        }
+    }
 }

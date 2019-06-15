@@ -26,6 +26,7 @@ import java.util.List;
 public class VehiculeControleur {
 
     private HashMap<VehiculeEntity, TypeVehiculeEntity> map;
+    private int vehiculeID=0;
 
     @RequestMapping(value = "listerVehicule.htm")
     public ModelAndView listerVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -39,6 +40,9 @@ public class VehiculeControleur {
                     List<TypeVehiculeEntity> typeVehiculeEntities =
                             vehiculeService.getVehiculeType(vehiculeEntity.getIdVehicule());
                     map.put(vehiculeEntity, typeVehiculeEntities.get(0));
+                    if(vehiculeID<vehiculeEntity.getIdVehicule()){
+                        vehiculeID = vehiculeEntity.getIdVehicule();
+                    }
                 }
             }
 
@@ -97,15 +101,15 @@ public class VehiculeControleur {
 			        Integer.parseInt(request.getParameter("stationId")));
 			vehiculeEntity.setLatitude(stationEntity.getLatitude());
 			vehiculeEntity.setLongitude(stationEntity.getLongitude());
+			vehiculeEntity.setIdVehicule(++vehiculeID);
 			
 			VehiculeService vehiculeService = new VehiculeService();
 			vehiculeService.insertVehicule(vehiculeEntity);
-			
-			TypeVehiculeService typeVehiculeService = new TypeVehiculeService();
-			TypeVehiculeEntity typeVehiculeEntity = typeVehiculeService.consulterTypeVehiculeById(
-			        vehiculeEntity.getTypeVehicule());
-			map.put(vehiculeEntity, typeVehiculeEntity);
-			
+
+            List<TypeVehiculeEntity> typeVehiculeEntities =
+                    vehiculeService.getVehiculeType(vehiculeEntity.getIdVehicule());
+            map.put(vehiculeEntity, typeVehiculeEntities.get(0));
+
             request.setAttribute("map", map);
 
         } catch (Exception e) {
@@ -134,4 +138,66 @@ public class VehiculeControleur {
         }
         return new ModelAndView(destinationPage);
     }
+
+
+    @RequestMapping(value = "updateVehicule.htm")
+    public ModelAndView updateVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String destinationPage = "";
+        try {
+
+            VehiculeService vehiculeService = new VehiculeService();
+            int id = Integer.parseInt(request.getParameter("id"));
+			VehiculeEntity vehiculeEntity = vehiculeService.consulterVehiculeById(id);
+			map.remove(vehiculeEntity);
+
+			vehiculeEntity.setRfid(Integer.parseInt(request.getParameter("rfid")));
+			vehiculeEntity.setEtatBatterie(Integer.parseInt(request.getParameter("etat")));
+			vehiculeEntity.setTypeVehicule(Integer.parseInt(request.getParameter("typeId")));
+
+			StationService stationService = new StationService();
+			StationEntity stationEntity = stationService.consulterStationById(
+			        Integer.parseInt(request.getParameter("stationId")));
+			vehiculeEntity.setLatitude(stationEntity.getLatitude());
+			vehiculeEntity.setLongitude(stationEntity.getLongitude());
+
+			vehiculeService.modifierVehicule(vehiculeEntity);
+
+            List<TypeVehiculeEntity> typeVehiculeEntities =
+                    vehiculeService.getVehiculeType(vehiculeEntity.getIdVehicule());
+            map.put(vehiculeEntity, typeVehiculeEntities.get(0));
+
+            request.setAttribute("map", map);
+
+        } catch (Exception e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "vues/Erreur";
+        }
+        destinationPage = "/vues/listerVehicule";
+        return new ModelAndView(destinationPage);
+    }
+
+    @RequestMapping(value = "modifierVehicule.htm")
+    public ModelAndView modifierVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String destinationPage = "";
+        try {
+			TypeVehiculeService typeVehiculeService = new TypeVehiculeService();
+			request.setAttribute("mesTypes", typeVehiculeService.consulterListeTypeVehicules());
+
+			VehiculeService vehiculeService = new VehiculeService();
+            int id = Integer.parseInt(request.getParameter("id"));
+            request.setAttribute("veh", vehiculeService.consulterVehiculeById(id));
+
+            StationService stationService = new StationService();
+			request.setAttribute("mesStations", stationService.consulterListeStations());
+
+            destinationPage = "vues/modifierVehicule";
+        } catch (Exception e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "Erreur";
+        }
+        return new ModelAndView(destinationPage);
+    }
+
 }

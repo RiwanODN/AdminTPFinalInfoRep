@@ -12,40 +12,41 @@
 <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
 
 <script>
-    /*$(document).ready(function() {
-        var events = $('#events');
-        var tableVeh = $('#tableVehicules').DataTable( {
-            dom: 'Bfrtip',
-            select: {
-                style: 'os',
-                blurable: true
-            }
-        } );
-    } );*/
-
     $(document).ready(function () {
         var table = $('#tableVehicules').DataTable( {
             select: true
         });
 
-        $('#tableVehicules tbody').on('click', 'tr', function () {
-            $(this).toggleClass('selected');
-            if(table.rows('.selected').data().length == 0) {
-                //console.log("is hidden")
-				$('#btnSupprimer').prop("disabled", true);
-            }
-            else {
+        table.on( 'select', function ( e, dt, type, indexes ) {
+            var count = table.rows( { selected: true } ).count();
+                if(count == 1) {
+                    $('#btnModifier').prop("disabled", false);
+                }
+                else {
+                    $('#btnModifier').prop("disabled", true);
+                }
                 $('#btnSupprimer').prop("disabled", false);
+        } );
+
+        table.on( 'deselect', function ( e, dt, type, indexes ) {
+            var count = table.rows( { selected: true } ).count();
+            if(count == 0) {
+                $('#btnSupprimer').prop("disabled", true);
+                $('#btnModifier').prop("disabled", true);
             }
-        });
+        } );
 
         $('#btnValiderSupprimer').click(function () {
-            var ids = $.map(table.rows('.selected').data(), function (item) {
+            var ids = $.map(table.rows( { selected: true } ).data(), function (item) {
                 return item[0];
             });
             window.location = 'supprimerVehicule.htm?id='+ids;
-            //console.log(ids)
-            //alert(table.rows('.selected').data().length + ' row(s) selected');
+        });
+
+        $('#btnModifier').click(function () {
+            var row = table.rows( { selected: true } ).data()[0];
+            console.log(row[0]);
+            window.location = 'modifierVehicule.htm?id='+row[0];
         });
 		
     });
@@ -63,6 +64,7 @@
     <div class="container">
         <div class="btn-group" role="group">
             <button id="btnAjouter"type="button" class="btn btn-default btn-lg" onclick="{window.location = 'ajouterVehicule.htm';}">Ajouter</button>
+            <button disabled id="btnModifier"type="button" class="btn btn-default btn-lg">Modifier</button>
             <button disabled id="btnSupprimer" type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#supprimerModal">Supprimer</button>
         </div>
 
