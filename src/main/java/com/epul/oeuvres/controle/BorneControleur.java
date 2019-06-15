@@ -60,7 +60,9 @@ public class BorneControleur {
             Borne.setEtatBorne(Byte.valueOf("0"));
 
             StationEntity stat = stationServ.consulterStationById(Integer.parseInt(request.getParameter("station")));
+
             Borne.setStation(stat);
+
             Borne.setVehicule(null);
 
            /* VehiculeEntity vehiculeEn =vehiculeServ.consulterVehiculeById(Integer.parseInt(request.getParameter("Vehicule")));

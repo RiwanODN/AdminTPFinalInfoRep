@@ -18,7 +18,7 @@ public class UtiliseService extends EntityService {
 			mesUtilises = (List<UtiliseEntity>)
 					entitymanager.createQuery(
 							"SELECT a FROM UtiliseEntity a " +
-									"ORDER BY a.idUtilise").getResultList();
+									"ORDER BY a.vehicule.idVehicule").getResultList();
 			entitymanager.close();
 		}catch (RuntimeException e) {
 			new MonException("Erreur de lecture", e.getMessage());

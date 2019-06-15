@@ -19,23 +19,20 @@
 				<th class="col-md-2">Vehicule</th>
 				<th class="col-md-2">Client</th>
 				<th class="col-md-4">Date</th>
-				<th class="col-md-4">Utilise de départ</th>
-				<th class="col-md-4">Utilise d'arrivée</th>
-
-
-
+				<th class="col-md-4">Borne de départ</th>
+				<th class="col-md-4">Borne d'arrivée</th>
 			</tr>
 
 			<c:forEach items="${mesUtilises}" var="item">
 				<tr>
-					<td>${item.vehicule.getIdVehicule}</td>
-					<td>${item.client.getIdClient}</td>
+					<td>${item.vehicule.getIdVehicule()}</td>
+					<td>${item.client.getIdClient()}</td>
 					<td>${item.getDate()} €</td>
-					<td>${item.borneDepart.getVille().getIdBorne() }</td>
-					<td>${item.borneArrivee.getIdVehicule().getIdBorne() }</td>
-					<td><a class="btn btn-info" href="modifierUtilise.htm?id=${item.idUtilise}" role="button"><span
+					<td>${item.borneDepart.getIdBorne() }</td>
+					<td>${item.borneArrivee.getIdBorne() }</td>
+					<td><a class="btn btn-info" href="modifierUtilise.htm?id=${item.getDate()}" role="button"><span
 							class="glyphicon glyphicon-pencil"></span> Modifier</a>
-						<a class="btn btn-danger" href="supprimerUtilise.htm?id=${item.idUtilise}" role="button"><span
+						<a class="btn btn-danger" href="supprimerUtilise.htm?id=${item.getDate()}" role="button"><span
 								class="glyphicon glyphicon-remove-circle"></span> Supprimer</a></td>
 
 				</tr>
