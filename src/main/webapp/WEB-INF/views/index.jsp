@@ -13,7 +13,7 @@
 <%@include file="vues/navigation.jsp"%>
 <div class="jumbotron text-center">
 
-    <h1>Bienvenue à Autolib</h1>
+    <h1>Bienvenue sur PolyVoiture</h1>
 </div>
 <h2>Sélectionnez dans le menu la fonctionnalité voulue !</h2>
 <%@include file="vues/footer.jsp"%>
