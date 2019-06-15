@@ -30,8 +30,8 @@
 				<tr>
 					<td>${item.idBorne}</td>
 					<td>${item.etatBorne}</td>
-					<td>${item.station.getAdresse()} €</td>
-					<td>${item.station.getVille()}</td>
+					<td>${item.station.numero} ${item.station.adresse}</td>
+					<td>${item.station.ville}</td>
 					<td>${item.vehicule.getIdVehicule()}</td>
 					<td><a class="btn btn-info" href="modifierBorne.htm?id=${item.idBorne}" role="button"><span
 							class="glyphicon glyphicon-pencil"></span> Modifier</a>

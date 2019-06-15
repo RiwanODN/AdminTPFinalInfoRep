@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 ///
 /// Les m?thode du contr?leur r?pondent ? des sollicitations
@@ -109,26 +110,23 @@ public class BorneControleur {
 
             int numero = Integer.parseInt(request.getParameter("id"));
 
-            ArrayList<VehiculeEntity> vehiculeEntity= (ArrayList<VehiculeEntity>) vehiculeService.consulterListeVehicules();
-            ArrayList<BorneEntity> borneEntity= (ArrayList<BorneEntity>) unService.consulterListeBornes();
+            List<VehiculeEntity> vehiculeEntity = vehiculeService.consulterListeVehicules();
+            List<BorneEntity> borneEntity = unService.consulterListeBornes();
 
-            ArrayList<Integer> indiceAEffacer=new ArrayList<Integer>();
+            List<VehiculeEntity> indiceAEffacer = new ArrayList<>();
 
-            for (int i=0;i<=vehiculeEntity.size()-1;i++){
-                for (int j=0;j<=borneEntity.size()-1;j++){
-                    if (borneEntity.get(j).getVehicule()==null){
-
+            for (VehiculeEntity vehicule : vehiculeEntity){
+                for (BorneEntity borne : borneEntity){
+                    if(borne.getVehicule() != null) {
+                        if(vehicule.getIdVehicule() == borne.getVehicule().getIdVehicule()){
+                            indiceAEffacer.add(vehicule);
+                        }
                     }
-                    else if (vehiculeEntity.get(i).getIdVehicule()==borneEntity.get(j).getVehicule().getIdVehicule()){
-                            indiceAEffacer.add(i);
-                            j=borneEntity.size()-1;
-                    }
-
                 }
             }
-            System.out.println("deuxieme étape");
-            for (int i=indiceAEffacer.size()-1;i>=0;i--){
-                vehiculeEntity.remove(indiceAEffacer.get(i));
+
+            for (VehiculeEntity vehiculeToRemove : indiceAEffacer){
+                vehiculeEntity.remove(vehiculeToRemove);
             }
 
 
