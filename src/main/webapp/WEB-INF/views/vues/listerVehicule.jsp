@@ -21,9 +21,11 @@
             var count = table.rows( { selected: true } ).count();
                 if(count == 1) {
                     $('#btnModifier').prop("disabled", false);
+                    $('#btnReserver').prop("disabled", false);
                 }
                 else {
                     $('#btnModifier').prop("disabled", true);
+                    $('#btnReserver').prop("disabled", true);
                 }
                 $('#btnSupprimer').prop("disabled", false);
         } );
@@ -33,6 +35,7 @@
             if(count == 0) {
                 $('#btnSupprimer').prop("disabled", true);
                 $('#btnModifier').prop("disabled", true);
+                $('#btnReserver').prop("disabled", true);
             }
         } );
 
@@ -45,8 +48,13 @@
 
         $('#btnModifier').click(function () {
             var row = table.rows( { selected: true } ).data()[0];
-            console.log(row[0]);
+            //console.log(row[0]);
             window.location = 'modifierVehicule.htm?id='+row[0];
+        });
+
+        $('#btnReserver').click(function () {
+            var row = table.rows( { selected: true } ).data()[0];
+            window.location = 'reserverVehicule.htm?id='+row[0];
         });
 		
     });
@@ -66,6 +74,7 @@
             <button id="btnAjouter"type="button" class="btn btn-default btn-lg" onclick="{window.location = 'ajouterVehicule.htm';}">Ajouter</button>
             <button disabled id="btnModifier"type="button" class="btn btn-default btn-lg">Modifier</button>
             <button disabled id="btnSupprimer" type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#supprimerModal">Supprimer</button>
+            <button disabled id="btnReserver"type="button" class="btn btn-default btn-lg">Reserver</button>
         </div>
 
         <h3>Liste des Vehicules</h3>

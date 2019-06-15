@@ -1,12 +1,8 @@
 package com.epul.oeuvres.controle;
 
-import com.epul.oeuvres.dao.StationService;
-import com.epul.oeuvres.dao.TypeVehiculeService;
+import com.epul.oeuvres.dao.*;
 import com.epul.oeuvres.meserreurs.MonException;
-import com.epul.oeuvres.metier.StationEntity;
-import com.epul.oeuvres.metier.TypeVehiculeEntity;
-import com.epul.oeuvres.metier.VehiculeEntity;
-import com.epul.oeuvres.dao.VehiculeService;
+import com.epul.oeuvres.metier.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +14,10 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -193,6 +193,71 @@ public class VehiculeControleur {
 			request.setAttribute("mesStations", stationService.consulterListeStations());
 
             destinationPage = "vues/modifierVehicule";
+        } catch (Exception e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "Erreur";
+        }
+        return new ModelAndView(destinationPage);
+    }
+
+    @RequestMapping(value = "reserverVehicule.htm")
+    public ModelAndView reserverVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String destinationPage = "";
+        try {
+            VehiculeService vehiculeService = new VehiculeService();
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            ReservationService reservationService = new ReservationService();
+            for(ReservationEntity reservationEntity: reservationService.consulterListeReservation()) {
+                if(reservationEntity.getVehicule() == id) {
+
+                    Timestamp currentDate = new Timestamp(System.currentTimeMillis());
+                    if(currentDate.after(reservationEntity.getDateReservation()) &&
+                        currentDate.before(reservationEntity.getDateEcheance())) {
+
+                        return new ModelAndView("vues/alertDejaReserver");
+                    }
+                }
+            }
+
+            VehiculeEntity vehiculeEntity = vehiculeService.consulterVehiculeById(id);
+            request.setAttribute("veh", vehiculeEntity);
+
+            ClientService clientService = new ClientService();
+            request.setAttribute("mesClients", clientService.consulterListeClients());
+
+            destinationPage = "vues/reserverVehicule";
+        } catch (Exception e) {
+            request.setAttribute("MesErreurs", e.getMessage());
+            destinationPage = "Erreur";
+        }
+        return new ModelAndView(destinationPage);
+    }
+
+    @RequestMapping(value = "confirmation.htm")
+    public ModelAndView confirmation(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String destinationPage = "";
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            ReservationService reservationService = new ReservationService();
+            String dateR = request.getParameter("dateReservation") + " " + request.getParameter("timeReservation") + ":00";
+            String dateE = request.getParameter("dateEcheance") + " " + request.getParameter("timeEcheance") + ":00";
+            Timestamp dateReservation = Timestamp.valueOf(dateR);
+            Timestamp dateEcheance = Timestamp.valueOf(dateE);
+
+            ReservationEntity reservationEntity = new ReservationEntity();
+            reservationEntity.setClient(Integer.parseInt(request.getParameter("clientId")));
+            reservationEntity.setDateReservation(dateReservation);
+            reservationEntity.setDateEcheance(dateEcheance);
+            reservationEntity.setVehicule(id);
+
+            reservationService.insertReservation(reservationEntity);
+
+            request.setAttribute("map", map);
+            destinationPage = "vues/listerVehicule";
         } catch (Exception e) {
             request.setAttribute("MesErreurs", e.getMessage());
             destinationPage = "Erreur";
