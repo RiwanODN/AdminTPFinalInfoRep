@@ -47,4 +47,47 @@ public class StationService extends EntityService {
         }
         return station;
     }
+
+    public void insertStation(StationEntity stationEntity) throws MonException {
+        try {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+            entitymanager.persist(stationEntity);
+            transac.commit();
+            entitymanager.close();
+        } catch (RuntimeException e) {
+            new MonException("Erreur de lecture", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void supprimerStation(StationEntity stationEntity) throws MonException {
+        try {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+            entitymanager.remove(entitymanager.find(StationEntity.class, stationEntity.getIdStation()));
+            transac.commit();
+            entitymanager.close();
+        } catch (MonException e) {
+            throw e;
+        }
+        catch (Exception exc) {
+            throw new MonException(exc.getMessage(), "systeme");
+        }
+    }
+
+    public void modifierStation(StationEntity stationEntity) throws MonException {
+        try {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+            entitymanager.merge(stationEntity);
+            transac.commit();
+            entitymanager.close();
+        } catch (MonException e) {
+            throw e;
+        } catch (Exception exc) {
+            throw new MonException(exc.getMessage(), "systeme");
+        }
+    }
 }

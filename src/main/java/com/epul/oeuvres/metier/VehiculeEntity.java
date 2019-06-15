@@ -9,6 +9,7 @@ import java.util.Objects;
 public class VehiculeEntity {
     private int idVehicule;
     private int rfid;
+    private int typeVehicule;
     private Integer etatBatterie;
     private String disponibilite;
     private BigDecimal latitude;
@@ -32,6 +33,16 @@ public class VehiculeEntity {
 
     public void setRfid(int rfid) {
         this.rfid = rfid;
+    }
+
+    @Basic
+    @Column(name = "type_vehicule")
+    public int getTypeVehicule() {
+        return typeVehicule;
+    }
+
+    public void setTypeVehicule(int typeVehicule) {
+        this.typeVehicule = typeVehicule;
     }
 
     @Basic

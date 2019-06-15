@@ -108,6 +108,16 @@
 
                 </ul>
             </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"  style="fontSize: 15px;">
+                    <span class="glyphicon glyphicon-user"></span>
+                    Vehicules
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="listerVehicule.htm"><span class="glyphicon glyphicon-th-list"></span> Afficher les Vehicules </a></li>
+                </ul>
+            </li>
             <li><a href="javascript:fermer()" style="fontSize: 15px;"><span class="glyphicon glyphicon-log-out"></span> Quitter</a></li>
         </c:if>
     </div>
