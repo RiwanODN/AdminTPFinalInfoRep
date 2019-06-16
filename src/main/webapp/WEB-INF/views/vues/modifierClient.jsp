@@ -45,6 +45,17 @@
         </div>
     </div>
 
+    <div class="row" >
+        <div class="col-md-12" style ="border:none; background-color:transparent; height :20px;">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-3 control-label">Role du client : </label>
+        <div class="col-md-3">
+            <INPUT type="text" name="txtrole" value=${item.role} id="role" class="form-control" min="0">
+        </div>
+    </div>
 
     <div class="row" >
         <div class="col-md-12" style ="border:none; background-color:transparent; height :20px;">

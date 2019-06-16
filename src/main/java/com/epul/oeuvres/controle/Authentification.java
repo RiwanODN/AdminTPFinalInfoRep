@@ -19,21 +19,11 @@ import java.security.NoSuchAlgorithmException;
 @Controller
 public class Authentification {
 
-    ///
-    /// Login
-    ////
-
-
     @RequestMapping(value = "login.htm", method = RequestMethod.GET)
     public ModelAndView pageLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return new ModelAndView("vues/formLogin");
     }
 
-    ///
-    //
-    //// Contrôle Login
-    ///
-    ////
     @RequestMapping(value = "controleLogin.htm")
     public ModelAndView controleLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String destinationPage;
@@ -50,9 +40,16 @@ public class Authentification {
                     try {
                         String pwdmd5 = FonctionsUtiles.md5(pwd);
                         if (unUtilisateur.getMotdepasse().equals(pwdmd5)) {
-                            HttpSession session = request.getSession();
-                            session.setAttribute("id", unUtilisateur.getIdClient());
-                            destinationPage = "/index";
+                            if(unUtilisateur.getRole().equalsIgnoreCase("ADMIN")){
+                                HttpSession session = request.getSession();
+                                session.setAttribute("id", unUtilisateur.getIdClient());
+                                destinationPage = "/index";
+                            } else {
+                                message = "Utilisateur non autorisé";
+                                request.setAttribute("message", message);
+                                destinationPage = "/vues/formLogin";
+                            }
+
                         } else {
                             message = "mot de passe erroné";
                             request.setAttribute("message", message);
@@ -73,6 +70,15 @@ public class Authentification {
             }
         }
         return new ModelAndView(destinationPage);
+    }
+
+    @RequestMapping(value = "logout.htm", method = RequestMethod.GET)
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        HttpSession session = request.getSession();
+        session.invalidate();
+
+        return new ModelAndView("index");
     }
 
 }

@@ -10,7 +10,7 @@
 </div>
 
 <div class="container">
-	<a class="btn btn-secondary" href="../index.htm" role="button"><span class="glyphicon glyphicon-menu-left"></span> Retour accueil</a>
+	<a class="btn btn-secondary" href="index.htm" role="button"><span class="glyphicon glyphicon-menu-left"></span> Retour accueil</a>
 	<h2>Tableau des Bornes</h2>
 	<div class="container">
 		<h3>Liste des Bornes</h3>

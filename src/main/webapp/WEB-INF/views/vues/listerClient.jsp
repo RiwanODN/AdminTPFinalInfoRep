@@ -18,7 +18,8 @@
 					<th class="col-md-1">Numero</th>
 					<th class="col-md-2">Nom</th>
 					<th class="col-md-2">Prénom</th>
-					<th class="col-md-4">Date de naissance</th>
+					<th class="col-md-2">Date de naissance</th>
+					<th class="col-md-2">Role</th>
 
 				</tr>
 
@@ -28,6 +29,7 @@
 						<td>${item.nom}</td>
 						<td>${item.prenom}</td>
 						<td>${item.dateNaissance}</td>
+						<td>${item.role}</td>
 						<td><a class="btn btn-info" href="modifierClient.htm?id=${item.idClient}" role="button"><span
 								class="glyphicon glyphicon-pencil"></span> Modifier</a>
 							<a class="btn btn-danger" href="supprimerClient.htm?id=${item.idClient}" role="button"><span
